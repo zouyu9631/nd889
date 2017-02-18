@@ -1,0 +1,2 @@
+# nd889
+ARTIFICIAL INTELLIGENCE (study at Udacity)
