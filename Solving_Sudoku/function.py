@@ -70,21 +70,47 @@ def reduce_puzzle(values):
             return False
     return values
 
+def search(values):
+    "Using depth-first search and propagation, create a search tree and solve the sudoku."
+    # First, reduce the puzzle using the previous function
+    values = reduce_puzzle(values)
+    if values == False: return values
+    if all(len(values[box]) == 1 for box in boxes):
+        return values # solved
+
+    # Choose one of the unfilled squares with the fewest possibilities
+    _, shortest_box = min((len(values[box]), box) for box in boxes if len(values[box]) > 1)
+    # Now use recursion to solve each one of the resulting sudokus, and if one returns a value (not False), return that answer!
+
+    for d in values[shortest_box]:
+        try_values = values.copy()
+        try_values[shortest_box] = d
+        try_values = search(try_values)
+        if try_values:
+            return try_values
+
+
 if __name__ == '__main__':
     grid1 = '..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..'
-    gv = grid_values(grid1)
-    display(gv)
-    print('\n')
-    display(eliminate(gv))
-    # display(eliminate(eliminate(eliminate(eliminate(eliminate(eliminate(eliminate(eliminate(gv)))))))))
-    print('\n')
-    display(only_choice(eliminate(gv)))
-    print('\n')
-    gv = grid_values(grid1)
-    display(reduce_puzzle(gv))
-    print('\n')
+    # gv = grid_values(grid1)
+    # display(gv)
+    # print('\n')
+    # display(eliminate(gv))
+    # # display(eliminate(eliminate(eliminate(eliminate(eliminate(eliminate(eliminate(eliminate(gv)))))))))
+    # print('\n')
+    # display(only_choice(eliminate(gv)))
+    # print('\n')
+    # gv = grid_values(grid1)
+    # display(reduce_puzzle(gv))
+    # print('\n')
+    #
+    # gv = grid_values(grid1)
+    # display(search(gv))
 
+    # a harder puzzle
     grid2 = '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
     gv = grid_values(grid2)
-    display(reduce_puzzle(gv))
+    #display(reduce_puzzle(gv))
+    #print('\n')
+    display(search(gv))
 
